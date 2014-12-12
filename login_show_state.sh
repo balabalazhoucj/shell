@@ -1,5 +1,5 @@
 #!/bin/bash
-systemload=$(uptime | awk -F '[ ,]' '{print $14}')
+systemload=$(uptime | awk -F '[ ,]' '{print $13}')
 processes=$(ps -ef | wc -l)
 usage=$(df -h / | awk 'NR==2{print $5 " " $2 }')
 userlogged=$(who | wc -l)
@@ -14,8 +14,8 @@ MEMUSED="$(( (  $MemTotal - $MemFree  - $Cached  - $Buffers ) *100 / $MemTotal )
 SWAPUSED="$((( $SwapTotal - $SwapFree - $SwapCached ) * 100 / $SwapTotal ))"
 PUBLICIP=$(curl --connect-timeout 5 -s icanhazip.com)
 
-printf '\n\t System information as of $(date)\n \n'
-printf '\t System load: %s \t \t Processes: %s\n' $systemload $processes
+printf "\n\t System information as of $(date) \n \n"
+printf '\t System load: %s \t \t Processes: %s \n' $systemload $processes
 printf '\t Usage of /: %s of %sB \t User logged in: %s \n' $usage $userlogged
 printf '\t Memory usaage: %s%% \t \t Swap usage: %s%% \n' $MEMUSED $SWAPUSED
 printf '\t IP address for Public: %s \n' $PUBLICIP
