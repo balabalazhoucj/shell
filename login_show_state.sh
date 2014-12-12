@@ -1,5 +1,4 @@
 #!/bin/bash
-printf "\n\t System information as of $(date)\n \n"
 systemload=$(uptime | awk -F '[ ,]' '{print $14}')
 processes=$(ps -ef | wc -l)
 usage=$(df -h / | awk 'NR==2{print $5 " " $2 }')
@@ -14,6 +13,8 @@ SwapTotal=`grep -ie 'SwapTotal' /proc/meminfo | cut -d' ' -f2- | tr -d "[A-Z][a-
 MEMUSED="$(( (  $MemTotal - $MemFree  - $Cached  - $Buffers ) *100 / $MemTotal ))"
 SWAPUSED="$((( $SwapTotal - $SwapFree - $SwapCached ) * 100 / $SwapTotal ))"
 
+
+printf '\n\t System information as of $(date)\n \n'
 printf '\t System load: %s \t \t Processes: %s\n' $systemload $processes
 printf '\t Usage of /: %s of %sB \t User logged in: %s \n' $usage $userlogged
 printf '\t Memory usaage: %s%% \t \t Swap usage: %s%% \n' $MEMUSED $SWAPUSED
