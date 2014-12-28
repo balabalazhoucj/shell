@@ -28,5 +28,5 @@ checkip $GATE_WAY
 sed -i "s/\(GATE_WAY=\).*/\1${GATE_WAY}/" /etc/sysconfig/network-scripts/ifcfg-eth0
 
 read -p "input DNS:" DNS
-checkip $GATE_WAY
+checkip $DNS
 echo "nameserver $DNS" > /etc/resolv.conf
