@@ -33,7 +33,7 @@ sed -i "s/\(NETMASK=\).*/\1${NET_MASK}/" /etc/sysconfig/network-scripts/ifcfg-et
 
 read -p "input GATEWAY:" GATE_WAY
 checkip $GATE_WAY
-sed -i "s/\(GATE_WAY=\).*/\1${GATE_WAY}/" /etc/sysconfig/network-scripts/ifcfg-eth0
+sed -i "s/\(GATEWAY=\).*/\1${GATE_WAY}/" /etc/sysconfig/network-scripts/ifcfg-eth0
 
 read -p "input DNS:" DNS
 checkip $DNS
