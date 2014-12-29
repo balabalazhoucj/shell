@@ -16,33 +16,47 @@ checkip ()
 		ip=(${ip//./ })
 		for i in ${ip[@]}
 		do
-			[[ $i -le 255 ]] || exit 2
+			if [[ $i -le 255 ]];then
+				single=0 
+			else
+				single=1
+				echo "u input error,pls input again!"
+				break
+			fi
 		done 
 	else
-		exit 3
+		single=1
+		echo "u input error,pls input again!"
 	fi
 }
 
-read -p "input ip address:" IP_ADDR
-checkip $IP_ADDR
-sed -i "s/\(IPADDR=\).*/\1${IP_ADDR}/" /etc/sysconfig/network-scripts/ifcfg-eth0
+input()
+{
+while [[ $single != 0 ]]
+do
+	read -p "input $1:" value
+	checkip $value
+done
+sed -i "s/\($2=\).*/\1${value}/" /etc/sysconfig/network-scripts/ifcfg-eth0
+}
+single=1
+input "ip address" "IPADDR"
+single=1
+input "NETMASK" "NETMASK"
+single=1
+input "GATEWAY" "GATEWAY"
 
-read -p "input netmask:" NET_MASK
-checkip $NET_MASK
-sed -i "s/\(NETMASK=\).*/\1${NET_MASK}/" /etc/sysconfig/network-scripts/ifcfg-eth0
-
-read -p "input GATEWAY:" GATE_WAY
-checkip $GATE_WAY
-sed -i "s/\(GATEWAY=\).*/\1${GATE_WAY}/" /etc/sysconfig/network-scripts/ifcfg-eth0
-
-read -p "input DNS:" DNS
-checkip $DNS
+read -p "input DNS[221.228.255.1]:" DNS
+if [ -z $DNS ];then
+	DNS="221.228.255.1"
+else	
+	checkip $DNS
+fi
 echo "nameserver $DNS" > /etc/resolv.conf
 
 #生成新设备MAC
 awk -F '"' '$14=="eth0"{print "HWADDR="$8}' /etc/udev/rules.d/70-persistent-net.rules >> /etc/sysconfig/network-scripts/ifcfg-eth0
-#删除脚本相关文件
-sed -i '$'d /etc/bashrc
-rm -f $0
-
 /etc/init.d/network restart
+#删除脚本相关文件
+sed -i '$d' /etc/bashrc
+rm -f $0
