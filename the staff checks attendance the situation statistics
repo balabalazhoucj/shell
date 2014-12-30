@@ -1,0 +1,6 @@
+#!/bin/sh
+#数据来源于科密考勤机
+#显示每日首次和末次打卡记录
+#未完
+
+awk -v name="nimama" -v day="2014-12-16" '{if ($2 ~ name && $4 ~ day) print $2" "$4" "$5}' source.txt | sed -n '1p;$p' 
