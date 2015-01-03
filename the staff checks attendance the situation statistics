@@ -1,6 +1,36 @@
 #!/bin/sh
 #数据来源于科密考勤机
 #显示每日首次和末次打卡记录
-#未完
+#下一步增加输入指定年月
+SHOW=1
+sed -i '/^$/d' source.txt
+for namelist in $(awk '{print $1","$2}' source.txt | uniq)
+do
+        dp=$(echo $namelist |awk -F ',' '{print $1}')
+        n=$(echo $namelist |awk -F ',' '{print $2}')
+        for ((i=1;i<=31;i++))
+        do
+        if [ $i -lt 10 ];then
+                        DAY=${i/[0-9]/0$i}
+        else
+                        DAY=$i
+        fi
+        if [ $(date -d "2014/12/$DAY" +%w) -le 5 -a $(date -d "2014/12/$DAY" +%w) -ge 1 ];then
 
-awk -v name="nimama" -v day="2014-12-16" '{if ($2 ~ name && $4 ~ day) print $2" "$4" "$5}' source.txt | sed -n '1p;$p' 
+                        F=$(awk -v name="$n" -v day="2014/12/$DAY" '{if ($2 ~ name && $4 ~ day) print $5}' source.txt | sed -n '1p')
+                        S=$(awk -v name="$n" -v day="2014/12/$DAY" '{if ($2 ~ name && $4 ~ day) print $5}' source.txt | sed -n '$p')
+                        [[ -z $F ]] && continue
+                        if [ ${F/:/} -gt 830 ];then
+                                [ $SHOW -eq 1 ] && echo "$dp $n"
+                                echo "2014/12/$DAY $F   迟到"
+                                SHOW=0
+                        fi
+                        if [ ${S/:/} -lt 1730 ];then
+                                [ $SHOW -eq 1 ] && echo "$dp $n"
+                                echo "2014/12/$DAY $S   早退"
+                                SHOW=0
+                        fi
+        fi
+        done
+        SHOW=1
+done
