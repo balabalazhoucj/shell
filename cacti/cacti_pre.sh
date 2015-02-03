@@ -15,7 +15,7 @@ mysql -uroot -e "create database cacti;grant all on cacti.* to cactiuser@localho
 mysql -uroot cacti < cacti.sql
 sed -i 's#//\($url_path = "/\)cacti/"#\1"#' ${_PATH}/include/config.php
 sed -i 's/required/sufficient/g' /etc/pam.d/crond
-echo '* * * * * php ${_PATH}/poller.php > /dev/null 2>&1' >> /var/spool/cron/root
+echo '* * * * * php '"$_PATH"'/poller.php > /dev/null 2>&1' >> /var/spool/cron/root
 /etc/init.d/crond start
 wget http://www.cacti.net/downloads/spine/cacti-spine-0.8.8c.tar.gz
 tar zxf cacti-spine-0.8.8c.tar.gz
