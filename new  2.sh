@@ -31,3 +31,11 @@ do
 	dataname=$i
 	RM
 done
+
+
+
+
+sed -i 's/[0-9]\{4\},/'"''"'/'
+
+
+select id from file where 
