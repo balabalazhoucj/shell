@@ -69,7 +69,7 @@ SINGLE() {
 	fi
 	MPATH="/data/mysql${MYSQLPORT}"
 	MYSQLDATA="${MPATH}/data"
-	MSCOKET="/tmp/mysqld.sock"
+	MSCOKET="/tmp/mysql.sock"
 	MYSQLCMD="mysql ${AUTH} -e"
 	mkdir -p ${MYSQLDATA}
 	prepare_mysql && echo "Mysql-${VER} is prepared..." || return 1
@@ -102,7 +102,7 @@ EOF
 	do
 		MPATH="/data/mysql${MYSQLPORT}"
 		MYSQLDATA="${MPATH}/data"
-		MSCOKET="${MPATH}/mysqld.sock"
+		MSCOKET="${MPATH}/mysql.sock"
 		((n++))
 		MYSQLD=mysqld${n}
 		MYSQLCMD="mysql ${AUTH} -S ${MPATH}/mysql.sock -e"
