@@ -1,8 +1,8 @@
 #安装nginx
 yum install pcre-devel openssl-devel -y
 useradd -s /sbin/nologin -M nginx
-mkdir -p /opt/nginx-1.8.0/{run,log}
-ln -s /opt/nginx-1.8.0 /opt/nginx
+mkdir -p /data/nginx-1.8.0/{run,log}
+ln -s /data/nginx-1.8.0 /opt/nginx
 wget http://nginx.org/download/nginx-1.8.0.tar.gz
 tar zxf nginx-1.8.0.tar.gz
 cd nginx-1.8.0
@@ -16,10 +16,8 @@ cd nginx-1.8.0
 --http-log-path=/data/nginx/log/access.log   \
 --pid-path=/data/nginx/run/nginx.pid \
 --with-poll_module \
---with-http_realip_module\
---with-http_flv_module \
---with-http_mp4_module
+--with-http_realip_module
 make && make install
-ln -s /opt/nginx-1.8.0 /opt/nginx
-cd /opt/nginx/conf
+ln -s /data/nginx-1.8.0 /data/nginx
+cd /data/nginx/conf
 egrep -v "^$|#" nginx.conf.default >nginx.conf
