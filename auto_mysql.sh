@@ -29,7 +29,7 @@ install_mysql() {
 	cmake . -DCMAKE_INSTALL_PREFIX=${MYSQLPATHOLD} \
 	-DENABLED_LOCAL_INFILE=1 \
 	-DWITH_PARTITION_STORAGE_ENGINE=1 \
-	-DWITH_EXTRA_CHARSETS:STRING=all \
+	-DWITH_EXTRA_CHARSETS_STRING=all \
 	-DDEFAULT_CHARSET=utf8 \
 	-DDEFAULT_COLLATION=utf8_general_ci \
 	-DMYSQL_USER=${USER} > install.log
@@ -80,7 +80,7 @@ SINGLE() {
 	cp ${MYSQLPATH}/support-files/mysql.server /etc/init.d/mysqld
 	chmod +x /etc/init.d/mysqld
 	/etc/init.d/mysqld start || return 1
-	${MYSQLCMD} "drop user 'root'@'::1';drop user ''@'localhost';drop user ''@'localhost.localdomain';"
+#	${MYSQLCMD} "drop user 'root'@'::1';drop user ''@'localhost';drop user ''@'localhost.localdomain';"
 #	${MYSQLCMD} "update mysql.uesr set password=password('123456') where user='root' and host='localhost';"
 #	${MYSQLCMD} "update mysql.uesr set password=password('123456') where user='root' and host='%';"
 }
